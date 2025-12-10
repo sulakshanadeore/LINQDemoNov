@@ -11,8 +11,10 @@ namespace LINQDemo
     {
         public int RollNo { get; set; }
         public string StudName { get; set; }
-        public string CourseName { get; set; }
 
+        public int Age { get; set; }
+        public string CourseName { get; set; }
+        public int Fees { get; set; }
 
     }
 

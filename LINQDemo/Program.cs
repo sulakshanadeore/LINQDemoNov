@@ -95,8 +95,71 @@ namespace LINQDemo
 
             // EagerLoadingWithToListToArrayCountAny();
 
-            List<Student> students = new List<Student>() { 
+            //groupBy();
+
+            //SelectNew();
+
+
+            List<Student> students = new List<Student>() {
+
+            new Student{RollNo=1,StudName="Anish",CourseName="C",Fees=10000},
+            new Student{RollNo=2,StudName="Manish",CourseName="C",Fees=10000},
+            new Student{RollNo=3,StudName="Ana",CourseName="C++",Fees=30000},
+            new Student{RollNo=4,StudName="Mina",CourseName="C#",Fees=40000},
+            new Student{RollNo=5,StudName="Rina",CourseName="C",Fees=10000},
+            new Student{RollNo=6,StudName="Amrit",CourseName="C++",Fees=30000},
+            new Student{RollNo=7,StudName="Anisha",CourseName="C#",Fees=40000},
+            new Student{RollNo=8,StudName="Niharika",CourseName="C",Fees=10000}
+                  };
+
+            var groupedresult = from s in students
+                                group s by s.CourseName into g
+                                select new { CrsName = g.Key, totalfees=g.Sum(s1=>s1.Fees),studentCnt=g.Count(),minfees=g.Min(m=>m.Fees)};
+            foreach (var item in groupedresult)
+            {
+                Console.WriteLine("CourseName= " + item.CrsName);
+                Console.WriteLine(item.totalfees);
+                Console.WriteLine(item.studentCnt);
+                Console.WriteLine("Min fees=" + item.minfees);
+                
+            }
+
+            Console.WriteLine("------------");
+
+            var minimumfees = (from s in students
+                               select s.Fees).Min();
+             Console.WriteLine(minimumfees);
             
+
+        }
+
+        private static void SelectNew()
+        {
+            List<Student> students = new List<Student>() {
+
+            new Student{RollNo=1,StudName="Anish",CourseName="C",Age=21},
+            new Student{RollNo=2,StudName="Manish",CourseName="C",Age=22},
+            new Student{RollNo=3,StudName="Ana",CourseName="C++",Age=21},
+            new Student{RollNo=4,StudName="Mina",CourseName="C#",Age=23},
+            new Student{RollNo=5,StudName="Rina",CourseName="C",Age=20},
+            new Student{RollNo=6,StudName="Amrit",CourseName="C++",Age=21},
+            new Student{RollNo=7,StudName="Anisha",CourseName="C#",Age=23},
+            new Student{RollNo=8,StudName="Niharika",CourseName="C",Age=19},
+                  };
+
+            var alldata = from s in students
+                          select new { ID = s.RollNo, ParticipantName = s.StudName };
+
+            foreach (var item in alldata)
+            {
+                Console.WriteLine(item.ID + "  " + item.ParticipantName);
+            }
+        }
+
+        private static void groupBy()
+        {
+            List<Student> students = new List<Student>() {
+
             new Student{RollNo=1,StudName="Anish",CourseName="C"},
             new Student{RollNo=2,StudName="Manish",CourseName="C"},
             new Student{RollNo=3,StudName="Ana",CourseName="C++"},
@@ -116,14 +179,14 @@ namespace LINQDemo
                 Console.WriteLine("Course =" + item.Key);
                 foreach (var item1 in item)
                 {
-                    Console.WriteLine(item1.RollNo + " " + item1.StudName); 
+                    Console.WriteLine(item1.RollNo + " " + item1.StudName);
                 }
             }
 
             Console.WriteLine("==================");
             Console.WriteLine("Method Syntax");
             Console.WriteLine();
-            var groupedCrs=students.GroupBy(s=>s.CourseName).OrderBy(g=>g.Key).ToList();
+            var groupedCrs = students.GroupBy(s => s.CourseName).OrderBy(g => g.Key).ToList();
             foreach (var item in groupedCrs)
             {
                 Console.WriteLine("Course =" + item.Key);
@@ -156,14 +219,9 @@ namespace LINQDemo
                 Console.WriteLine("CAtegory id=" + item.Key);
                 foreach (var item1 in item)
                 {
-                    Console.WriteLine(item1.Prodid +  " " + item1.Prodname);
+                    Console.WriteLine(item1.Prodid + " " + item1.Prodname);
                 }
             }
-
-
-
-
-
         }
 
         private static void EagerLoadingWithToListToArrayCountAny()
