@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LINQDemo
 {
-    internal class Products
+    public class Products
     {
         public int Prodid { get; set; }
 
@@ -15,5 +15,14 @@ namespace LINQDemo
 
         public int Categoryid { get; set; }
 
+    }
+
+
+    public class Customers
+    {
+        public int Custid { get; set; }
+        public string CustName { get; set; }
+
+        public int Age { get; set; }
     }
 }
