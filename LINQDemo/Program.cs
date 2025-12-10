@@ -1,6 +1,7 @@
 ﻿
 //using System.Security.Cryptography.X509Certificates;
 
+using System.Data;
 using System.Net.Http.Headers;
 
 namespace LINQDemo
@@ -92,7 +93,76 @@ namespace LINQDemo
 
 
 
-            EagerLoadingWithToListToArrayCountAny();
+            // EagerLoadingWithToListToArrayCountAny();
+
+            List<Student> students = new List<Student>() { 
+            
+            new Student{RollNo=1,StudName="Anish",CourseName="C"},
+            new Student{RollNo=2,StudName="Manish",CourseName="C"},
+            new Student{RollNo=3,StudName="Ana",CourseName="C++"},
+            new Student{RollNo=4,StudName="Mina",CourseName="C#"},
+            new Student{RollNo=5,StudName="Rina",CourseName="C"},
+            new Student{RollNo=6,StudName="Amrit",CourseName="C++"},
+            new Student{RollNo=7,StudName="Anisha",CourseName="C#"},
+            new Student{RollNo=8,StudName="Niharika",CourseName="C"},
+                  };
+
+            var studentsByCourseName = from s in students
+                                       orderby s.CourseName
+                                       group s by s.CourseName into Courses
+                                       select Courses;
+            foreach (var item in studentsByCourseName)
+            {
+                Console.WriteLine("Course =" + item.Key);
+                foreach (var item1 in item)
+                {
+                    Console.WriteLine(item1.RollNo + " " + item1.StudName); 
+                }
+            }
+
+            Console.WriteLine("==================");
+            Console.WriteLine("Method Syntax");
+            Console.WriteLine();
+            var groupedCrs=students.GroupBy(s=>s.CourseName).OrderBy(g=>g.Key).ToList();
+            foreach (var item in groupedCrs)
+            {
+                Console.WriteLine("Course =" + item.Key);
+                foreach (var item1 in item)
+                {
+                    Console.WriteLine(item1.RollNo + " " + item1.StudName);
+                }
+            }
+
+
+            Console.WriteLine("==================");
+
+
+            List<Products> products = new List<Products>();
+            products.Add(new Products { Prodid = 1, Prodname = "Chai", Price = 10, Categoryid = 1 });
+            products.Add(new Products { Prodid = 12, Prodname = "Coffe", Price = 20, Categoryid = 1 });
+
+            products.Add(new Products { Prodid = 31, Prodname = "Dosa", Price = 50, Categoryid = 3 });
+            products.Add(new Products { Prodid = 14, Prodname = "Idli", Price = 60, Categoryid = 3 });
+
+            products.Add(new Products { Prodid = 15, Prodname = "Icecream", Price = 40, Categoryid = 2 });
+
+            var groupByCategory = from p in products
+                                  orderby p.Categoryid
+                                  group p by p.Categoryid into CategoryGroup
+                                  select CategoryGroup;
+
+            foreach (var item in groupByCategory)
+            {
+                Console.WriteLine("CAtegory id=" + item.Key);
+                foreach (var item1 in item)
+                {
+                    Console.WriteLine(item1.Prodid +  " " + item1.Prodname);
+                }
+            }
+
+
+
+
 
         }
 

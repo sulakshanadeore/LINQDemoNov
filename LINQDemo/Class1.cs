@@ -6,6 +6,16 @@ using System.Threading.Tasks;
 
 namespace LINQDemo
 {
+
+    public class Student
+    {
+        public int RollNo { get; set; }
+        public string StudName { get; set; }
+        public string CourseName { get; set; }
+
+
+    }
+
     public class Products
     {
         public int Prodid { get; set; }
