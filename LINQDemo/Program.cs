@@ -124,6 +124,71 @@ namespace LINQDemo
 
             //SelectAndSelectMany();
 
+            //OrderByThenBy();
+
+
+            //CrossJoinsUsingAnonymousTypes();
+
+
+
+
+
+            CrossJoinExample2();
+
+        }
+
+        private static void CrossJoinExample2()
+        {
+            Skills[] skills = new Skills[] {
+            new Skills{SkillName="Azure" },
+            new Skills { SkillName="AWS"},
+            new Skills{SkillName="GCP" },
+            new Skills{ SkillName="LowCode"},
+            new Skills{ SkillName="NoCode" },
+            new Skills{ SkillName="PowerBI"},
+
+            };
+
+            Stud[] studs = new Stud[2] {
+            new Stud{Name="John" },
+            new Stud{Name="Gauri" }
+            };
+
+            var cross = studs.SelectMany(s => skills, (s, sk) => new { studname = s.Name, skilldata = sk.SkillName });
+
+            foreach (var item in cross)
+            {
+                Console.WriteLine(item.studname + "  " + item.skilldata);
+
+
+            }
+        }
+
+        private static void CrossJoinsUsingAnonymousTypes()
+        {
+            var skills = new[] {
+            new {SkillNames="AWS,Azure,GCP" },
+            new {SkillNames="PowerBI,LowCode,NoCode" }
+            };
+
+            var students = new[] {
+
+                new {Name="John",SkillsPossessed=skills[0] },
+                new {Name="Gauri",SkillsPossessed=skills[1] }
+            };
+
+            var crossjoin = students.SelectMany(s => skills, (s, sk) => new { studname = s.Name, studdataSkills = sk.SkillNames }).ToList();
+
+            foreach (var item in crossjoin)
+            {
+                Console.WriteLine(item.studname);
+                Console.WriteLine(item.studdataSkills);
+                Console.WriteLine();
+            }
+        }
+
+        private static void OrderByThenBy()
+        {
             List<Employee> emplist = new List<Employee>
             {
             new Employee{Employeeid=11,Empname="Anish",Deptno=10 },
@@ -134,12 +199,12 @@ namespace LINQDemo
               new Employee{Employeeid=5,Empname="Elina",Deptno=20 },
 
             };
-                                            //primary                       //secondary
+            //primary                       //secondary
             //var orderedData = emplist.OrderBy(d => d.Deptno).ThenBy(e => e.Employeeid);
 
-            var orderedData= from e in emplist
-                             orderby e.Deptno,e.Employeeid
-                             select e;
+            var orderedData = from e in emplist
+                              orderby e.Deptno, e.Employeeid
+                              select e;
 
             foreach (var item in orderedData)
             {
@@ -148,8 +213,8 @@ namespace LINQDemo
 
             Console.WriteLine("------------------------");
             var orderedList = (from e in emplist
-                              orderby e.Deptno , e.Employeeid 
-                              select e).ToList();
+                               orderby e.Deptno, e.Employeeid
+                               select e).ToList();
 
             orderedList.Reverse();
             foreach (var item in orderedList)
@@ -160,8 +225,8 @@ namespace LINQDemo
 
 
             var DescendingorderedList = (from e in emplist
-                               orderby e.Deptno, e.Employeeid descending
-                               select e).ToList();
+                                         orderby e.Deptno, e.Employeeid descending
+                                         select e).ToList();
 
             foreach (var item in DescendingorderedList)
             {
@@ -170,18 +235,13 @@ namespace LINQDemo
 
             Console.WriteLine("---------");
             Console.WriteLine("Method Syntax");
-            Console.WriteLine(  );
+            Console.WriteLine();
             var methodSyntaxOrdering = emplist.OrderBy(d => d.Deptno).ThenByDescending(d1 => d1.Employeeid);
 
             foreach (var item in methodSyntaxOrdering)
             {
                 Console.WriteLine(item.Employeeid + " " + item.Empname + item.Deptno);
             }
-
-
-
-
-
         }
 
         private static void SelectAndSelectMany()

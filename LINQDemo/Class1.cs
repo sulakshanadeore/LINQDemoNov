@@ -18,6 +18,19 @@ namespace LINQDemo
 
     }
 
+
+    public class Stud
+    {
+        public string Name { get; set; }    
+
+    }
+
+    public class Skills
+    {
+        public string SkillName { get; set; }
+
+    }
+
     public class Products
     {
         public int Prodid { get; set; }
