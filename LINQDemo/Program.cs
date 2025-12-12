@@ -122,34 +122,98 @@ namespace LINQDemo
 
 
 
-            //var empSkills = new[]
-            //{
-            //    new { EmpName="John",Skills=new[] {
-            //        "C","C++","C#" } },
-            //    new { EmpName="Gill",Skills=new[] {"Angular","JS","React" } },
-            //    new { EmpName="Jim",Skills=new[] {"HTML","CSS","SQL" } },
-            //};
+            //SelectAndSelectMany();
 
-            ////Non flattened data
-            //var data = empSkills.Select(e => e.Skills);
-            //foreach (var item in data)
-            //{
-            //    //   Console.WriteLine(item);
-            //    foreach (var item1 in item)
-            //    {
-            //        Console.WriteLine(item1);
-            //    }
-            //}
-            //Console.WriteLine("==========");
-            ////flattend data
-            //var selectManyData = empSkills.SelectMany(s => s.Skills);
-            //foreach (var item in selectManyData)
-            //{
-            //    Console.WriteLine(item);
-            //}
+            List<Employee> emplist = new List<Employee>
+            {
+            new Employee{Employeeid=11,Empname="Anish",Deptno=10 },
+            new Employee{Employeeid=2,Empname="Binita",Deptno=10 },
+            new Employee{Employeeid=13,Empname="Sima",Deptno=20 },
+            new Employee{Employeeid=41,Empname="Rima",Deptno=30 },
+            new Employee{Employeeid=14,Empname="Tina",Deptno=30 },
+              new Employee{Employeeid=5,Empname="Elina",Deptno=20 },
+
+            };
+                                            //primary                       //secondary
+            //var orderedData = emplist.OrderBy(d => d.Deptno).ThenBy(e => e.Employeeid);
+
+            var orderedData= from e in emplist
+                             orderby e.Deptno,e.Employeeid
+                             select e;
+
+            foreach (var item in orderedData)
+            {
+                Console.WriteLine(item.Employeeid + " " + item.Empname + item.Deptno);
+            }
+
+            Console.WriteLine("------------------------");
+            var orderedList = (from e in emplist
+                              orderby e.Deptno , e.Employeeid 
+                              select e).ToList();
+
+            orderedList.Reverse();
+            foreach (var item in orderedList)
+            {
+                Console.WriteLine(item.Employeeid + " " + item.Empname + item.Deptno);
+            }
+            Console.WriteLine("=======================");
 
 
-            //Console.WriteLine("---------");
+            var DescendingorderedList = (from e in emplist
+                               orderby e.Deptno, e.Employeeid descending
+                               select e).ToList();
+
+            foreach (var item in DescendingorderedList)
+            {
+                Console.WriteLine(item.Employeeid + " " + item.Empname + item.Deptno);
+            }
+
+            Console.WriteLine("---------");
+            Console.WriteLine("Method Syntax");
+            Console.WriteLine(  );
+            var methodSyntaxOrdering = emplist.OrderBy(d => d.Deptno).ThenByDescending(d1 => d1.Employeeid);
+
+            foreach (var item in methodSyntaxOrdering)
+            {
+                Console.WriteLine(item.Employeeid + " " + item.Empname + item.Deptno);
+            }
+
+
+
+
+
+        }
+
+        private static void SelectAndSelectMany()
+        {
+            var empSkills = new[]
+            {
+                new { EmpName="John",Skills=new[] {
+                    "C","C++","C#" } },
+                new { EmpName="Gill",Skills=new[] {"Angular","JS","React" } },
+                new { EmpName="Jim",Skills=new[] {"HTML","CSS","SQL" } },
+            };
+
+            //Non flattened data
+            var data = empSkills.Select(e => e.Skills);
+            foreach (var item in data)
+            {
+                //   Console.WriteLine(item);
+                foreach (var item1 in item)
+                {
+                    Console.WriteLine(item1);
+                }
+            }
+            Console.WriteLine("==========");
+            //flattend data
+            var selectManyData = empSkills.SelectMany(s => s.Skills);
+            foreach (var item in selectManyData)
+            {
+                Console.WriteLine(item);
+            }
+
+
+            Console.WriteLine("---------");
 
 
             var skills = new[] {
@@ -178,11 +242,6 @@ namespace LINQDemo
                     Console.WriteLine(item1);
                 }
             }
-
-
-
-
-
         }
 
         private static void FullJoinExample()
