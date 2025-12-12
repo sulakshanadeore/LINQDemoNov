@@ -111,14 +111,77 @@ namespace LINQDemo
             //InnerJoinExample2();
 
 
-             LeftJoinExample();
+            //  LeftJoinExample();
 
 
-           // RightJoinExample();
+            // RightJoinExample();
 
 
 
             //FullJoinExample();
+
+
+
+            //var empSkills = new[]
+            //{
+            //    new { EmpName="John",Skills=new[] {
+            //        "C","C++","C#" } },
+            //    new { EmpName="Gill",Skills=new[] {"Angular","JS","React" } },
+            //    new { EmpName="Jim",Skills=new[] {"HTML","CSS","SQL" } },
+            //};
+
+            ////Non flattened data
+            //var data = empSkills.Select(e => e.Skills);
+            //foreach (var item in data)
+            //{
+            //    //   Console.WriteLine(item);
+            //    foreach (var item1 in item)
+            //    {
+            //        Console.WriteLine(item1);
+            //    }
+            //}
+            //Console.WriteLine("==========");
+            ////flattend data
+            //var selectManyData = empSkills.SelectMany(s => s.Skills);
+            //foreach (var item in selectManyData)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+
+            //Console.WriteLine("---------");
+
+
+            var skills = new[] {
+            new {SkillNames="AWS,Azure,GCP" },
+            new {SkillNames="PowerBI,LowCode,NoCode" }
+            };
+
+            var students = new[] {
+
+                new {Name="John",SkillsPossessed=skills[0] },
+                new {Name="Gauri",SkillsPossessed=skills[1] }
+            };
+            var selectManyExample = students.SelectMany(s => s.SkillsPossessed.SkillNames.Split(","));
+
+            foreach (var item in selectManyExample)
+            {
+                Console.WriteLine(item.ToString());
+            }
+            Console.WriteLine("-----");
+            var selectExample = students.Select(s => s.SkillsPossessed.SkillNames.Split(","));
+            foreach (var item in selectExample)
+            {
+                //Console.WriteLine(item);//[]
+                foreach (var item1 in item)
+                {
+                    Console.WriteLine(item1);
+                }
+            }
+
+
+
+
 
         }
 
