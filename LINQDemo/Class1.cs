@@ -25,7 +25,18 @@ namespace LINQDemo
         public string Prodname { get; set; }
         public double Price { get; set; }
 
-        public int Categoryid { get; set; }
+        public int? Categoryid { get; set; }
+
+    }
+
+
+
+    public class Category
+    { 
+        public int? Categoryid { get; set; }
+
+        public string CategoryName { get; set; }
+
 
     }
 
@@ -37,4 +48,23 @@ namespace LINQDemo
 
         public int Age { get; set; }
     }
+
+
+
+
+    public class Employee
+    {
+        public int? Employeeid { get;  set; }
+        public string Empname { get; set; }
+        public int Salary { get; set; } = 10000;
+        public int? Deptno { get; set; } = 10;
+    }
+
+    public class Dept
+    {
+        public int Deptid { get; set; }
+        public string Deptname { get; set; }
+                
+    }
+
 }

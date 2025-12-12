@@ -100,6 +100,211 @@ namespace LINQDemo
             //SelectNew();
 
 
+            //AggregateFunctionsDemo();
+
+
+
+            //InnerJoinExample1();
+
+
+
+            //InnerJoinExample2();
+
+
+             LeftJoinExample();
+
+
+           // RightJoinExample();
+
+
+
+            //FullJoinExample();
+
+        }
+
+        private static void FullJoinExample()
+        {
+            List<Dept> deptlist = new List<Dept>()
+            {
+            new Dept{ Deptid=10,Deptname="HR"},
+            new Dept{ Deptid=20,Deptname="Training"},
+            };
+
+            List<Employee> emplist = new List<Employee>
+            {
+            new Employee{Employeeid=1,Empname="A",Deptno=10 },
+            new Employee{Employeeid=2,Empname="B",Deptno=10 },
+            new Employee{Employeeid=3,Empname="C",Deptno=10 },
+            new Employee{Employeeid=4,Empname="D",Deptno=10 },
+              new Employee{Employeeid=5,Empname="E",Deptno=null },
+
+            };
+
+            var leftjoinresult = from e in emplist
+                                 join d in deptlist
+                               on e.Deptno equals d.Deptid into deptGroup
+                                 from d in deptGroup.DefaultIfEmpty()
+                                 select new { EmpName = e.Empname, Dept = d?.Deptname };
+
+
+            //                     //LHS =deptlist                RHS=emplist
+            var rightjoinresult = from d in deptlist
+                                  join e in emplist
+                                on d.Deptid equals e.Deptno into empGroup
+                                  from e in empGroup.DefaultIfEmpty()
+                                  select new { EmpName = e?.Empname, Dept = d?.Deptname };
+
+            var fulljoinresult = leftjoinresult.Union(rightjoinresult);
+
+            foreach (var item in fulljoinresult)
+            {
+                Console.WriteLine(item.Dept + " " + item.EmpName);
+            }
+        }
+
+        private static void RightJoinExample()
+        {
+            List<Dept> deptlist = new List<Dept>()
+            {
+            new Dept{ Deptid=10,Deptname="HR"},
+            new Dept{ Deptid=20,Deptname="Training"},
+            };
+
+            List<Employee> emplist = new List<Employee>
+            {
+            new Employee{Employeeid=1,Empname="A",Deptno=10 },
+            new Employee{Employeeid=2,Empname="B",Deptno=10 },
+            new Employee{Employeeid=3,Empname="C",Deptno=10 },
+            new Employee{Employeeid=4,Empname="D",Deptno=10 },
+              new Employee{Employeeid=5,Empname="E",Deptno=null },
+
+            };
+
+
+            //                     //LHS =deptlist                RHS=emplist
+            var rightjoinresult = from d in deptlist
+                                  join e in emplist
+                                on d.Deptid equals e.Deptno into deptGroup
+                                  from e in deptGroup.DefaultIfEmpty()
+                                  select new { EmpName = e?.Empname ?? "No Employees in this Dept yet!!", Dept = d?.Deptname };
+
+            foreach (var item in rightjoinresult)
+            {
+                Console.WriteLine(item.EmpName + " " + item.Dept);
+            }
+        }
+
+        private static void LeftJoinExample()
+        {
+            List<Dept> deptlist = new List<Dept>()
+            {
+            new Dept{ Deptid=10,Deptname="HR"},
+            new Dept{ Deptid=20,Deptname="Training"},
+            };
+
+            List<Employee> emplist = new List<Employee>
+            {
+            new Employee{Employeeid=1,Empname="A",Deptno=10 },
+            new Employee{Employeeid=2,Empname="B",Deptno=10 },
+            new Employee{Employeeid=3,Empname="C",Deptno=10 },
+            new Employee{Employeeid=4,Empname="D",Deptno=10 },
+              new Employee{Employeeid=5,Empname="E",Deptno=null },
+
+            };
+
+
+            //                     //LHS =emplist                RHS=deptlist
+            //var leftjoinresult = from e in emplist
+            //                     join d in deptlist
+            //                   on e.Deptno equals d.Deptid into deptGroup
+            //                     from d in deptGroup.DefaultIfEmpty()
+            //                     select new {e.Empname,Dept=d?.Deptname ?? "No Deparment" };
+
+            //foreach (var item in leftjoinresult)
+            //{
+
+            //    Console.WriteLine(item.Empname + " " + item.Dept);
+            //}
+
+
+            //To work with left join in method syntax---use Group Join
+            var methodSyntaxLeftJoinResult = emplist.GroupJoin(deptlist, e => e.Deptno, d => d.Deptid,
+                (e, deptGroup) => new { e, deptGroup }).SelectMany(x => x.deptGroup.DefaultIfEmpty(),
+                (x, d) => new { employeeName = x.e.Empname, DepartmentName = d?.Deptname ?? "No deparment-" });
+
+            foreach (var item in methodSyntaxLeftJoinResult)
+            {
+
+                Console.WriteLine(item.employeeName + " " + item.DepartmentName);
+            }
+        }
+
+        private static void InnerJoinExample2()
+        {
+            List<Dept> deptlist = new List<Dept>()
+            {
+            new Dept{ Deptid=10,Deptname="HR"},
+            new Dept{ Deptid=20,Deptname="Training"},
+            };
+
+            List<Employee> emplist = new List<Employee>
+            {
+            new Employee{Employeeid=1,Empname="A",Deptno=10 },
+            new Employee{Employeeid=2,Empname="B",Deptno=10 },
+            new Employee{Employeeid=3,Empname="C",Deptno=10 },
+            new Employee{Employeeid=4,Empname="D",Deptno=10 },
+              new Employee{Employeeid=4,Empname="E",Deptno=null },
+
+            };
+            //Inner Join
+
+            var empDeptlist = deptlist.Join(emplist,
+                d => d.Deptid,
+                e => e.Deptno,
+                (d, e) => new { Empno = e.Employeeid, EmployeeName = e.Empname, EmpSalary = e.Salary, DepartmentName = d.Deptname, DepartmentID = d.Deptid });
+
+            foreach (var item in empDeptlist)
+            {
+                Console.WriteLine(item.DepartmentID + " " + item.DepartmentName + "   " + item.Empno + " " + item.EmployeeName + "  " + item.EmpSalary);
+            }
+        }
+
+        private static void InnerJoinExample1()
+        {
+            //1 Category---M Products
+
+            List<Category> categories = new List<Category>()
+            {
+                new Category {Categoryid=1,CategoryName="Beverages" } ,
+                new Category {Categoryid=2,CategoryName="Snacks" }
+            };
+            List<Products> products = new List<Products>()
+            {
+            new Products{Prodid=1,Prodname="Tea",Price=10,Categoryid=1 },
+            new Products{Prodid=2,Prodname="Coffee",Price=20,Categoryid=1 },
+            new Products{Prodid=3,Prodname="Idli",Price=50,Categoryid=2 },
+            new Products{Prodid=4,Prodname="Poha",Price=10,Categoryid=2 },
+            new Products{Prodid=5,Prodname="ABC",Price=10,Categoryid=null },
+
+              };
+
+            //Inner Join
+            var joinedResult = categories.Join(products,
+                c => c.Categoryid,
+                p => p.Categoryid,
+                (c, p) => new { Name = c.CategoryName, Product = p.Prodname });
+
+
+            foreach (var item in joinedResult)
+            {
+                //  Console.WriteLine(item.Name +  "----" + item.Product);
+                Console.WriteLine($"{item.Product} is in category = {item.Name}");
+
+            }
+        }
+
+        private static void AggregateFunctionsDemo()
+        {
             List<Student> students = new List<Student>() {
 
             new Student{RollNo=1,StudName="Anish",CourseName="C",Fees=10000},
@@ -114,23 +319,21 @@ namespace LINQDemo
 
             var groupedresult = from s in students
                                 group s by s.CourseName into g
-                                select new { CrsName = g.Key, totalfees=g.Sum(s1=>s1.Fees),studentCnt=g.Count(),minfees=g.Min(m=>m.Fees)};
+                                select new { CrsName = g.Key, totalfees = g.Sum(s1 => s1.Fees), studentCnt = g.Count(), minfees = g.Min(m => m.Fees) };
             foreach (var item in groupedresult)
             {
                 Console.WriteLine("CourseName= " + item.CrsName);
                 Console.WriteLine(item.totalfees);
                 Console.WriteLine(item.studentCnt);
                 Console.WriteLine("Min fees=" + item.minfees);
-                
+
             }
 
             Console.WriteLine("------------");
 
             var minimumfees = (from s in students
                                select s.Fees).Min();
-             Console.WriteLine(minimumfees);
-            
-
+            Console.WriteLine(minimumfees);
         }
 
         private static void SelectNew()
