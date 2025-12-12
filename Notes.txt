@@ -1,0 +1,167 @@
+
+	ADO.NET---->
+
+	Extension Methods and Delegates(Func,Action,Predicate)
+	LINQ---->
+---------------------------------------------------
+Delegate:
+	Middle person
+	Similar to Pointers to methods  in C#
+	
+	ClassLibrary						Client App/Program(Main)
+	Class:	Method           				Delegate      
+
+1) Write a method in the class
+ public string Greet()
+ {
+     return "Hello World";
+ }
+
+  public string Greet1(string name)
+{
+return "Hello " + name;
+}
+
+public void Print(string name)
+{
+
+}
+
+
+2) Declare a delegate
+EventHandling,Multi-threading, etc
+	To declare a delegate means:
+	1) declare one more method signature same as the class method with delegate keyword
+	
+	
+	public delegate string UserGreetings();
+	public delegate string GreetDelegate(string name);
+	public delegate void PRintDeleegate(String name);
+	
+	2) Where to declare?
+		1)In the classlibrary inside the class or outside the class
+		2) In the clientapp inside the class(Program) or outside the class
+
+3) Use the delegate(Program.cs--Main)
+	Delegate is reference type, Object creation is required
+Delegates point to the method,ie they method pointers, target the method
+
+
+	Employee emp=new Employee();
+	
+	UserGreeting usergreetobj=new UserGreeting(emp.Greet);   //pointing to the methdo
+
+Delegates types:
+Unicast----string/int/float,double,char/bool etc
+
+Multicast-----void
+
+
+
+
+
+LINQ----> 3 types of delegates
+Action(void)-----upto 16 parameters ie 0 paramters or upto 16 parameters input
+Func(any return type except bool)-----17 parameters ----last parameter is output parameter----upto 16 parameters input 
+Predicate(only return type is bool,no other return  type)----1 parameter input & 1 parameter as output(bool)
+
+
+
+	>=1 input parameter and u also want output from a method ---then its a func lambda
+	only one input parameter and 1 output and that output is bool-----then its predicate lambda
+	>=0 input parameter but no return type(void) then its Action lambda
+
+--------------------------------------------------------------
+LINQ----Language Integrated Query
+
+1) Object LINQ
+Language---Objects----> Collections(Generic,NonGeneric,Arrays)
+(C#)						(SQL)
+List the collections------------------------->select  from table
+Insert record in the collection----------->insert into table
+Update record in the collection----------->update
+Delete record in the collection---------->delete
+Find data in the collection-------------->select  with where 
+
+2) DLINQ (using LINQ)
+LINQ to DataSets/DataTables
+C# 
+
+
+3) XLINQ(XML File)
+
+------------------------------------------------------
+
+
+Two ways to write LINQ:
+
+
+1) Methnod syntax: Delegates(Action,Func,Predicate) and Extension Methods
+2) Query Syntax: simple query syntax
+
+----------------------
+Types of Joins:
+1) Inner Join: Joining 2 records from  both the collections using a common property from them, 
+and it returns only the matching records from the collections
+
+2) Outer Joins: Left,Right and Full Outer Join
+			Courses 		Students
+			c			5 students for C, 1 student-- crs not decided
+			C++
+			
+		a) LEFT: it will returns all records from the left collections + matching records from right collection
+				Course   		Student
+				C(A)	   		5--C, 1 --Not decided Course yet
+							(B)	
+				
+
+	        b)  RIGHT
+				Course   		Student
+				C	   		5--C, (A)
+				C++--no students yet
+				(B)
+		
+
+
+		c) Full  (left,right,union)
+
+			left 
+			right
+			fulljoin=left union( right)	
+				Course			Student
+				C			5 studenet	
+				C++				1 student---crs not decided
+
+3) Cross Join: one record of one colletion is matched with all the data of the second collection.
+		(This gives you all permuatations and combinations of all data of all collections)
+
+
+4) Group Join
+5) Join With Multiple Conditions
+-----------------------------------------------------------------------
+
+Partition operators:
+they are used skip, take, skip/take based on a condition or count.
+
+1) Take
+2)TakeWhile
+3)Skip
+4)SkipWhile
+5)Chunk(new in  .net 6)
+6)Takelast/SkipLast
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
